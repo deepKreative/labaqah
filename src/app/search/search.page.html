@@ -1,0 +1,46 @@
+<ion-header mode='ios'>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text=""  ></ion-back-button>
+    </ion-buttons>
+  	<ion-searchbar mode="ios" animated [(ngModel)]="searchInput" (ionChange)="onInput()" placeholder="{{'Search' | translate}}"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="search">  
+
+<div *ngIf="!loading && !products.length && !searchInput" class="empty">
+  <ion-icon color="dark" name="search" size="larg"></ion-icon>
+</div>  
+
+<div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div>
+
+<div *ngIf="!products.length && !loading && searchInput" class="no-products">
+  <h2>{{"No Products found" | translate}}!</h2>
+</div>
+
+<ion-list *ngIf="!loading && products">
+  <ion-row *ngFor="let product of products"  lines="none">
+    <div style="text-align: center;">
+      <ion-item  lines="none"  (click)="detail(product)">
+        <ion-thumbnail slot="start">
+          <img *ngIf="product.icon" src="{{product.icon}}">
+        </ion-thumbnail>
+        <ion-label >
+          <span class="product-name">{{ product.name }}</span>
+            <ion-row>
+              <span>{{ product.vendor_type[0]}}</span>
+            </ion-row>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-row>
+</ion-list>
+<ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && products.length" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>

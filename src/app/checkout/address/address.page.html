@@ -1,0 +1,99 @@
+<ion-header mode='ios'>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text=""  text="{{'Back' | translate}}" defaultHref="/tabs/cart"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{"Address" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
+<div *ngIf="!loader">
+<ion-list no-margin>
+  <ion-list-header>
+    <ion-label>{{"Delivery Address" | translate}}</ion-label>
+  </ion-list-header>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Name" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_first_name" name="firstname"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Billing Phone" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_phone" name="telephone"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Delivery Phone" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.delivery_phone" name="telephone"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Street Address" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_address_1" name="street1"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Street Address" | translate}} 2</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_address_2" name="street2"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Email" | translate}}</ion-label>
+            <ion-input required type="email" [(ngModel)]="checkoutData.form.billing_email" name="email"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"City" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_city" name="city"> </ion-input>
+        </ion-item>
+        <!-- <ion-item>
+            <ion-label>Delivery Date and Time</ion-label>
+            <ion-datetime required [(ngModel)]="selectedDateD" (ngModelChange)="getTimeSlotD(selectedDateD)" displayFormat="YYYY MMM D H:mm" min="1997" max="2030" value="2020-06-17T11:06Z"></ion-datetime>
+        </ion-item> -->
+        <ion-item lines="full">
+          <ion-label position="floating">Description</ion-label>
+          <ion-input required type="text" [(ngModel)]="checkoutData.form.delivery_notes" ></ion-input>
+        </ion-item>
+        <!-- <ion-item lines="full">
+          <ion-label>{{"Deliver to different address" | translate}}</ion-label>
+          <ion-toggle color="{{settings.theme.button}}" [(ngModel)]="checkoutData.form.ship_to_different_address"></ion-toggle>
+      </ion-item> -->
+</ion-list>
+
+<!-- <ion-list no-margin *ngIf="checkoutData.form.ship_to_different_address">
+
+  <ion-list-header>
+    <ion-label>{{"Delivery Address" | translate}}</ion-label>
+  </ion-list-header>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Name" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_first_name" name="firstname"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="stacked">{{"Phone" | translate}}</ion-label>
+          <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_phone" name="telephone"> </ion-input>
+      </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Street Address" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_address_1" name="street1"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"Street Address" | translate}} 2</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_address_2" name="street2"> </ion-input>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked">{{"City" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_city" name="city"> </ion-input>
+        </ion-item>
+       <ion-item>
+            <ion-label>Delivery Date and Time</ion-label>
+            <ion-datetime [(ngModel)]="selectedDateD2" (ngModelChange)="getTimeSlotD(selectedDateD2)" displayFormat="YYYY MMM D H:mm" min="1997" max="2030" value="2020-06-17T11:06Z"></ion-datetime>  
+                </ion-item> 
+</ion-list> -->
+<div *ngIf="errorMessage">
+  <h2 [innerHTML]="errorMessage" style="font-size: 14px;  color: red;margin: 16px; text-align: center;"></h2>
+</div>
+<div class="submit-button">
+<ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="continueCheckout()">{{"Continue" | translate}}</ion-button>
+</div>
+</div>
+</ion-content>
+
+
+  

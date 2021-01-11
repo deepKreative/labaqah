@@ -1,0 +1,477 @@
+<ion-app>
+  <ion-split-pane contentId="main-content" > 
+    <ion-menu contentId="main-content" type="overlay"  *ngIf="changeToLeft == 'en' ; else arabic" >
+      <ion-content>
+        <ion-menu-toggle auto-hide="false" >
+        <ion-list id="inbox-list">
+            <ion-item lines="none"  >
+              <ion-grid class="Aligner" >
+                <ion-row class="Aligner" >  
+                  <ion-card  *ngIf="username else loggedOut"   class="cardStyle  Aligner" style="background: #fbf4fc;" >
+                   <ion-row style="background: #fbf4fc" class="Aligner" >
+                      <ion-col size="4" class="Aligner" >
+                        <span style="text-transform: capitalize;" class="data-letters" >
+                          {{firstLetter}}
+                         </span>
+                      </ion-col>
+                      <ion-col size="8" class="">
+                        <ion-row style="font-weight: bold;" >
+                          {{username}} 
+                        </ion-row>
+                        <ion-row (click)="getLocation()" *ngIf="api.userLocation.shortaddress">
+                            {{api.userLocation.shortaddress}}
+                        </ion-row>
+                        <ion-row  style="font-size: small;" *ngIf="userEmail" >
+                          {{userEmail}}
+                         </ion-row>
+                      </ion-col>
+                      
+                    </ion-row>
+                </ion-card>
+              </ion-row>
+                <ng-template  #loggedOut  >
+                  <ion-row class="Aligner" >
+                  <ion-card  class="cardStyle  Aligner" style="background: #fbf4fc;"*ngIf="googleusername; else loggedOut_G ">
+                    <ion-row class="Aligner">
+                     <ion-col size="4" class="AlignerS" class="ion-no-padding " >
+                        <span style="text-transform: capitalize;" class="data-letters" >
+                          {{firstLetterG}}
+                         </span>
+                      </ion-col>
+                      <ion-col size="8"  class="ion-no-padding">
+                        <ion-row style="font-weight: bold;">
+                          {{googleusername}}
+                        </ion-row>
+                         <ion-row (click)="getLocation()">
+                          <!-- <ion-icon src="assets/map-pin.svg"></ion-icon> -->
+                          {{api.userLocation.shortaddress}}
+                        </ion-row>
+                        <ion-row style="font: size 13px;">
+                          {{googleuserEmail}}
+                         </ion-row>
+                      </ion-col>
+                    </ion-row>
+                </ion-card>
+              </ion-row>
+               </ng-template> 
+                <ng-template  #loggedOut_G  >
+                  <ion-row class="Aligner" >
+                  <ion-card  class="cardStyle">
+                    <ion-row style="background: #FDF1FF;" class="AlignerAcount">
+                     <ion-col size="4" class="Aligner" >
+                        <span class="data-letters" ><ion-icon src="assets/user.svg"></ion-icon> </span>
+                      </ion-col>
+                      <ion-col  size="8" class="ion-no-padding" >
+                        <p>{{"Login to order your favourite staff" |translate }}</p>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row style="background: white ;font-family: Muli; font-weight: bold;"  routerDirection="root" class="AlignerAcount"  >
+                      <ion-col size="7"  routerLink="/login1"  button class="AlignerAcount" >
+                        <ion-icon src="assets/user-plus.svg"></ion-icon>
+                        {{"Creat Account" |translate }}
+                      </ion-col>
+                      <ion-col  style="font-family: Muli; font-weight: bold; color: #6A097D;"  routerLink="/login1" button class="AlignerAcount">
+                        <ion-icon src="assets/unlock.svg"></ion-icon>
+                        {{"Login" |translate }}
+                      </ion-col>
+                    </ion-row>
+                </ion-card>
+              </ion-row>
+                </ng-template>
+              </ion-grid> 
+            </ion-item>
+            <ion-grid>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item lines="none" detail="false" button routerLink="/tabs//home" routerDirection="root">
+                    <ion-icon  slot="start" src="assets/Home.svg"></ion-icon>
+                    <ion-label>{{"Home" | translate}} </ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item lines="none" detail="false" button routerLink="/tabs/vendor" routerDirection="root">
+                    <ion-icon  slot="start" src="assets/Bag.svg"></ion-icon>
+                    <ion-label>{{"Stores" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item lines="none" detail="false" button routerLink="/tabs//categories" routerDirection="root">
+                    <ion-icon slot="start" src="assets/Category.svg"></ion-icon>
+                    <ion-label>{{"Categories" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item  lines="none" detail="false" (click)="presentAlertRadio('Languages')">
+                    <ion-icon slot="start" src="assets/globe.svg"></ion-icon>
+                    <ion-label>{{"Language" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item  lines="none" detail="false" button  routerDirection="root" routerLink="/about-us" >
+                    <ion-icon slot="start" src="assets/info.svg"></ion-icon>
+                    <ion-label>{{"About" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item   lines="true" *ngIf="username ||googleusername"  detail="false" >
+                    <ion-label> <strong>{{"My Account" | translate}} </strong></ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <div *ngIf="username ||googleusername">
+                <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goTo('tabs/account/orders')" lines="none"  class="ion-activatable">
+                      <ion-icon name="document-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Orders" | translate}}</ion-label>
+                  </ion-item>
+                  </ion-col>
+                  </ion-row>
+                  <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goTo('tabs/account/wishlist')"  lines="none" class="ion-activatable">
+                      <ion-icon  name="heart-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Wishlist" | translate}}</ion-label>
+                  </ion-item>
+                  </ion-col>
+                </ion-row>
+                  <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goToCart()"  lines="none" class="ion-activatable">
+                      <ion-icon src="assets/shopping-bag1.svg" slot="start" ></ion-icon>
+                      <ion-label>{{"My Cart" | translate}}</ion-label>
+                      <ion-badge  color="favorite"  *ngIf="data.count != 0"  (click)="goToCart()">
+                        <span class="count">{{data.count}}</span>
+                      </ion-badge>
+                  </ion-item>
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goTo('tabs/account/address')" lines="none"  class="ion-activatable">
+                      <ion-icon  name="location-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Address" | translate}}</ion-label>
+                  </ion-item>
+                  </ion-col>
+                </ion-row> -->
+                <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="log_out()" routerDirection="root">
+                      <ion-icon slot="start" src="assets/bx_bx-log-out-circle.svg"></ion-icon>
+                      <ion-label>{{"Log Out" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <div *ngIf="isVendorT">
+                <ion-row>
+                  <ion-col>
+                    <ion-item   lines="true"  detail="false" >
+                      <ion-label> <strong>{{"My Store" | translate}}</strong></ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="goTo('tabs/account/vendor-orders')" routerDirection="root">
+                      <ion-icon name="document-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Orders" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="goTo('tabs/account/vendor-products')" routerDirection="root">
+                      <ion-icon src="assets/Vectorr.svg"  slot="start"></ion-icon>
+                      <ion-label>{{"Products" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="goTo('tabs/account/add-products')" routerDirection="root">
+                      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Add Products" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row> -->
+              </div>
+                </div>
+            </ion-grid>
+        </ion-list>
+
+      </ion-menu-toggle>
+      </ion-content>
+    <ion-menu-toggle>
+      
+          <ion-footer class="ion-no-border  ion-self-center">
+            <hr>
+      <ion-toolbar >
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4" >
+              <img style="margin-left: 20px"  src="assets/Group 6.svg">
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <p style="color: #F94B4B ;" ><strong>{{"Need Support ?" | translate}} </strong></p>
+              <a href="tel:24137207">Tel : 24137207</a>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu-toggle>
+    </ion-menu>
+    
+
+<!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic -->
+<!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic -->
+<!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic -->
+<!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic --><!-- Arabic -->
+
+<ng-template #arabic>
+    <ion-menu contentId="main-content" type="overlay" side="end" >
+      <ion-content>
+        <ion-menu-toggle auto-hide="false" >
+        <ion-list id="inbox-list">
+            <ion-item lines="none"  >
+              <ion-grid class="Aligner" >
+                <ion-row class="Aligner" >  
+                  <ion-card  *ngIf="username else loggedOut"   class="cardStyle  Aligner" style="background: #fbf4fc;" >
+                   <ion-row style="background: #fbf4fc" class="Aligner" >
+                      <ion-col size="4" class="Aligner" >
+                        <span style="text-transform: capitalize;" class="data-letters" >
+                          {{firstLetter}}
+                         </span>
+                      </ion-col>
+                      <ion-col size="8" class="">
+                        <ion-row style="font-weight: bold;" >
+                          {{username}} 
+                        </ion-row>
+                        <ion-row (click)="getLocation()" *ngIf="api.userLocation.shortaddress">
+                            {{api.userLocation.shortaddress}}
+                        </ion-row>
+                        <ion-row  style="font-size: small;" *ngIf="userEmail" >
+                          {{userEmail}}
+                         </ion-row>
+                      </ion-col>
+                      
+                    </ion-row>
+                </ion-card>
+              </ion-row>
+                <ng-template  #loggedOut  >
+                  <ion-row class="Aligner" >
+                  <ion-card  class="cardStyle  Aligner" style="background: #fbf4fc;"*ngIf="googleusername; else loggedOut_G ">
+                    <ion-row class="Aligner">
+                     <ion-col size="3" class="AlignerS" class="ion-no-padding" >
+                        <span style="text-transform: capitalize;" class="data-letters" >
+                          {{firstLetterG}}
+                         </span>
+                      </ion-col>
+                      <ion-col size="9" class="ion-no-padding">
+                        <ion-row style="font-weight: bold;">
+                          {{googleusername}}
+                        </ion-row>
+                         <ion-row (click)="getLocation()">
+                          <ion-icon src="assets/map-pin.svg"></ion-icon>
+                          {{api.userLocation.shortaddress}}
+                        </ion-row>
+                        <ion-row style="font-size: small;">
+                          {{googleuserEmail}}
+                         </ion-row>
+                      </ion-col>
+                    </ion-row>
+                </ion-card>
+              </ion-row>
+                </ng-template>
+                <ng-template  #loggedOut_G  >
+                  <ion-row class="Aligner" >
+                  <ion-card  class="cardStyle">
+                    <ion-row style="background: #FDF1FF;" class="AlignerAcount">
+                     <ion-col size="4" class="Aligner" >
+                        <span class="data-letters" ><ion-icon src="assets/user.svg"></ion-icon> </span>
+                      </ion-col>
+                      <ion-col  size="8" class="ion-no-padding" >
+                        <p>{{"Login to order your favourite staff" |translate }}</p>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row style="background: white ;font-family: Muli; font-weight: bold;"  routerDirection="root" class="AlignerAcount"  >
+                      <ion-col size="7"  routerLink="/login1"  button class="AlignerAcount" >
+                        <ion-icon src="assets/user-plus.svg"></ion-icon>
+                        {{"Creat Account" |translate }}
+                      </ion-col>
+                      <ion-col  style="font-family: Muli; font-weight: bold; color: #6A097D;"  routerLink="/login1" button class="AlignerAcount">
+                        <ion-icon src="assets/unlock.svg"></ion-icon>
+                        {{"Login" |translate }}
+                      </ion-col>
+                    </ion-row>
+                </ion-card>
+              </ion-row>
+                </ng-template>
+              </ion-grid> 
+            </ion-item>
+            <ion-grid>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item lines="none" detail="false" button routerLink="/tabs//home" routerDirection="root">
+                    <ion-icon  slot="start" src="assets/Home.svg"></ion-icon>
+                    <ion-label>{{"Home" | translate}} </ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item lines="none" detail="false" button routerLink="/tabs/vendor" routerDirection="root">
+                    <ion-icon  slot="start" src="assets/Bag.svg"></ion-icon>
+                    <ion-label>{{"Stores" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item lines="none" detail="false" button routerLink="/tabs//categories" routerDirection="root">
+                    <ion-icon slot="start" src="assets/Category.svg"></ion-icon>
+                    <ion-label>{{"Categories" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item  lines="none" detail="false" (click)="presentAlertRadio('Languages')">
+                    <ion-icon slot="start" src="assets/globe.svg"></ion-icon>
+                    <ion-label>{{"Language" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col 	offset="1">
+                  <ion-item  lines="none" detail="false" button  routerDirection="root" routerLink="/about-us" >
+                    <ion-icon slot="start" src="assets/info.svg"></ion-icon>
+                    <ion-label>{{"About" | translate}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item   lines="true" *ngIf="username ||googleusername"  detail="false" >
+                    <ion-label> <strong>{{"My Account" | translate}} </strong></ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <div *ngIf="username ||googleusername">
+                <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goTo('tabs/account/orders')" lines="none"  class="ion-activatable">
+                      <ion-icon name="document-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Orders" | translate}}</ion-label>
+                  </ion-item>
+                  </ion-col>
+                  </ion-row>
+                  <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goTo('tabs/account/wishlist')"  lines="none" class="ion-activatable">
+                      <ion-icon  name="heart-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Wishlist" | translate}}</ion-label>
+                  </ion-item>
+                  </ion-col>
+                </ion-row>
+                  <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goToCart()"  lines="none" class="ion-activatable">
+                      <ion-icon src="assets/shopping-bag1.svg" slot="start" ></ion-icon>
+                      <ion-label>{{"My Cart" | translate}}</ion-label>
+                      <ion-badge  color="favorite"  *ngIf="data.count != 0"  (click)="goToCart()">
+                        <span class="count">{{data.count}}</span>
+                      </ion-badge>
+                  </ion-item>
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item (click)="goTo('tabs/account/address')" lines="none"  class="ion-activatable">
+                      <ion-icon  name="location-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Address" | translate}}</ion-label>
+                  </ion-item>
+                  </ion-col>
+                </ion-row> -->
+                <ion-row>
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="log_out()" routerDirection="root">
+                      <ion-icon slot="start" src="assets/bx_bx-log-out-circle.svg"></ion-icon>
+                      <ion-label>{{"Log Out" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <div *ngIf="isVendorT">
+                <ion-row>
+                  <ion-col>
+                    <ion-item   lines="true"  detail="false" >
+                      <ion-label> <strong>{{"My Store" | translate}} </strong></ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="goTo('tabs/account/vendor-orders')" routerDirection="root">
+                      <ion-icon name="document-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Orders" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="goTo('tabs/account/vendor-products')" routerDirection="root">
+                      <ion-icon name="document-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Products" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-row >
+                  <ion-col 	offset="1">
+                    <ion-item   lines="none" detail="false" button (click)="goTo('tabs/account/add-products')" routerDirection="root">
+                      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+                      <ion-label>{{"Add Products" | translate}}</ion-label>
+                    </ion-item> 
+                  </ion-col>
+                </ion-row> -->
+              </div>
+                </div>
+            </ion-grid>
+        </ion-list>
+
+      </ion-menu-toggle>
+      </ion-content>
+    <ion-menu-toggle>
+      
+          <ion-footer class="ion-no-border  ion-self-center">
+            <hr>
+      <ion-toolbar >
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4" >
+              <img style="margin-left: 20px"  src="assets/Group 6.svg">
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <p style="color: #F94B4B ;" ><strong>{{"Need Support ?" | translate}} </strong></p>
+              <a href="tel:24137207">Tel : 24137207</a>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu-toggle>
+    </ion-menu>
+  </ng-template>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+   </ion-split-pane> 
+  </ion-app>
+

@@ -1,0 +1,62 @@
+<!-- <ion-header mode="ios">
+  <ion-toolbar mode="md">
+  	<ion-buttons slot="start" (click)="close()">
+      <ion-back-button defaultHref="tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{"Delivery place" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content class="location-page">
+
+  <ion-list [hidden]="autocompleteItems.length == 0">
+    <ion-item lines="full" style="--padding-top: 4px; --padding-bottom: 4px;" *ngFor="let item of autocompleteItems" button="true" (click)="SelectSearchResult(item.description)">
+      <ion-label><h2>{{ item.description }}</h2></ion-label>
+    </ion-item>
+  </ion-list>
+<ion-button style="margin: 0;" expand="block" color="fab" (click)="currentLoadUserMap()"  >{{'Current Location' | translate}}</ion-button>
+<p style="text-align: center; color: #CD4DCC; margin: 5px;" > {{'Drag & click'| translate}}</p>
+
+  <agm-map 
+  [latitude]="lat"
+  [longitude]="lng" 
+  [zoom]="zoom"
+  [disableDefaultUI]="false"
+  >
+  <agm-marker 
+      *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m.label, i)"
+      (markerClick)="locationfromMap()"
+      [latitude]="m.lat"
+      [longitude]="m.lng"
+      [label]="m.label"
+      [iconUrl]="m.icon"
+      [markerDraggable]="m.draggable"
+      (dragEnd)="markerDragEnd(m, $event)">
+  </agm-marker>
+</agm-map>
+
+
+
+<!-- <ng-template #elses>
+  <agm-map 
+  [latitude]="latD"
+  [longitude]="lngD"
+  [zoom]="zoom"
+  [disableDefaultUI]="false">
+  <agm-marker 
+      *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m.label, i)"
+      (markerClick)="locationfromMap()"
+      [latitude]="latD"
+      [longitude]="lngD"
+      [label]="m.label"
+      [iconUrl]="m.icon"
+      [markerDraggable]="m.draggable"
+      (dragEnd)="markerDragEnd(m, $event)">
+  </agm-marker>
+</agm-map>
+</ng-template> -->
+
+<!-- (mapClick)="mapClicked($event)" -->
+</ion-content>

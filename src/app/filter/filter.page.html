@@ -1,0 +1,48 @@
+<ion-header mode='ios'>
+  <ion-toolbar>
+    <ion-title>{{"Filter" | translate}}</ion-title>
+    <ion-buttons slot="end">
+	    <ion-button (click)="dismiss()">
+	        <ion-icon slot="end" name="close" style="font-size: 20px;"></ion-icon>
+	    </ion-button>
+	</ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list-header>
+        <ion-label>{{"Price" | translate}}</ion-label>
+    </ion-list-header>
+    <ion-item lines="none" >
+        <div class="slidecontainer">
+          <ion-row>
+          <span style="width:10%" >0</span><input style="width: 70%;" type="range" min="0" max="{{price.upper}}" value="1" step="1" (change)="showVal(quantity)" [(ngModel)]="quantity" class="slider"/> <span *ngIf="quantity; else vlaue " style="width:10%; margin-left: 5px;">{{  quantity}}</span> <ng-template #vlaue> <span style="width:10%">{{  price.upper}}</span></ng-template>
+        </ion-row>
+      </div>
+      <!-- 0 &nbsp;<&nbsp;{{quantity}} &nbsp; -->
+        <!-- <ion-range dualKnobs="true" value="{{price}}" max="80" step="2" [(ngModel)]="price" onchange="onchangeFunc()" name="price" color="{{settings.theme.button}}">
+          <ion-label slot="start">{{price.lower}}</ion-label>
+          <ion-label slot="end">{{price.upper}}</ion-label>
+      </ion-range> -->
+    </ion-item>   
+   
+    <div *ngIf="attributes">
+      <div *ngFor="let attribute of attributes | keys"> 
+          <div *ngIf="attribute.value.terms.length">
+              <ion-list-header>
+                  <ion-label>{{attribute.value.name}}</ion-label>
+              </ion-list-header>
+              <ion-list>
+                <ion-item *ngFor="let term of attribute.value.terms" lines="none">
+                  <ion-label>{{term.name}} </ion-label>
+                  <ion-checkbox [(ngModel)]="term.selected"> </ion-checkbox>
+                </ion-item>
+              </ion-list>  
+          </div>
+      </div>
+    </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="{{settings.theme.button}}" (click)="applyFilter() ">
+    <ion-title style="text-align: center;">{{"Apply" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,397 @@
+ <ion-header mode='ios' >
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-button>
+       <ion-menu-button  class="search-outline-color" ></ion-menu-button>
+      </ion-button> 
+    </ion-buttons>
+    <ion-buttons slot="end" >
+      <ion-button (click)="goToSearch()">
+        <ion-icon name="search-outline" class="search-outline-color"></ion-icon> 
+      </ion-button>
+    </ion-buttons> 
+    <!-- <div *ngIf="settings.settings.location_filter == 1" style="margin : 0 auto; text-align: center;" >
+      <ion-chip style="background-color: #FDF1FF;" *ngIf="api.userLocation.latitude" (click)="getLocation()" >
+        <ion-icon src="assets/map-pin.svg"></ion-icon>
+        <ion-label>{{api.userLocation.address}}</ion-label>
+      </ion-chip>
+      <ion-chip style="background-color: #FDF1FF;" *ngIf="!api.userLocation.latitude" (click)="getLocation()">
+        <ion-icon src="assets/map-pin.svg"></ion-icon>
+        <ion-label>{{"Select your address" | translate}}</ion-label>
+      </ion-chip>
+    </div> -->
+    <div *ngIf="settings.settings.location_filter == 1" style="margin : 0 auto; text-align: center;">
+      <ion-chip  style="background-color: #FDF1FF;"  *ngIf="api.userLocation.latitude" routerLink='/location'>
+        <ion-icon name="location-outline"></ion-icon>
+        <ion-label>{{api.userLocation.address}}</ion-label>
+      </ion-chip>
+      <ion-chip  style="background-color: #FDF1FF;" *ngIf="!api.userLocation.latitude" routerLink='/location'>
+        <ion-icon name="location-outline"></ion-icon>
+        <ion-label>{{"Select your address" | translate}}</ion-label>
+      </ion-chip>
+    </div>
+  </ion-toolbar>
+</ion-header> 
+
+
+
+<ion-content >
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" *ngIf="settings.settings?.pull_to_refresh">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <div class="spinner" *ngIf="!data.blocks?.blocks || loading"><ion-spinner> </ion-spinner></div>
+
+<!-- 
+    <div *ngIf="!data.blocks?.blocks || loading " >
+      <ion-grid class="skeleton-card" *ngFor="let skl of [1,2,3,4,5,6,7,8]">
+        <ion-row> 
+          <ion-col   style="padding-right:5px;"  >
+            <img src="assets/Group 40.svg" width="287px;">
+          </ion-col>
+          <ion-col size="7" style="float: right;">
+              <ion-skeleton-text animated style="padding: 10px;">
+              </ion-skeleton-text>
+              <ion-skeleton-text animated style="padding: 10px;">
+              </ion-skeleton-text>
+              <ion-skeleton-text animated style="padding: 10px;">
+              </ion-skeleton-text>
+          </ion-col>
+          
+        </ion-row> 
+      </ion-grid>
+  </div> -->
+
+
+
+
+<!-- <div style="padding: 8px;" *ngIf="data.blocks?.settings && !loading && (data.blocks.recentProducts.length || data.blocks.categories.length) && (!data.blocks.settings.location_filter || (data.blocks.settings.location_filter == 1 && api.userLocation.latitude != 0))"> -->
+        <!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block--><!-- category-block-->
+    <h3 style=" font-family: Muli; font-weight: bold;font-style: normal;font-size: 18px;" *ngIf="googleusername ||username ||rusername">{{"What would you like to order ? " | translate}}{{googleusername}}{{username}}{{rusername}}</h3>
+   
+    <ion-grid class="ion-no-padding" *ngIf="lang == 'en'">
+      <ion-row> 
+        <ion-col  *ngIf="floVenrs == 'flower'" style="padding-right:5px;"  (click)="getCategory(floVenrs)" >
+          <img src="assets/Group 40.svg" width="287px;">
+        </ion-col>
+        <ion-col *ngIf="chocoVenrs == 'chocolate'" style="padding-left: 5px;" (click)="getCategory(chocoVenrs)">
+          <img src="assets/Group 41.svg" width="287px;">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-no-padding" *ngIf="lang == 'ar'">
+      <ion-row> 
+        <ion-col  *ngIf="floVenrs == 'flower'" style="padding-left:5px;"  (click)="getCategory(floVenrs)" >
+          <img src="assets/Group 40 AR.svg" width="287px;">
+        </ion-col>
+        <ion-col *ngIf="chocoVenrs == 'chocolate'" style="padding-right: 5px;" (click)="getCategory(chocoVenrs)">
+          <img src="assets/Group 41AR.svg" width="287px;">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+            <p style="margin-left: 5px;"></p>
+                  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->  <!-- Banner Slider -->
+      <div *ngIf="!isVendorT; else venBanner">
+        <div *ngFor="let children of data.blocks?.blocks" hideWhen="loading" class="blocks">
+          <div *ngIf="children.block_type == 'banner_block'" [style.background-color]="children.bg_color != '#FFFFFF' ? children.bg_color : 'unset'" [style.margin]="children.margin" [style.padding]="children.padding" class="banner_block">
+            <div class="{{children.header_align}}" [style.color]="children.title_color != '#000000' ? children.title_color : 'unset'">{{children.title}}</div>   
+                    <!-- Banner Slider -->
+              <div *ngIf="children.children?.length && children.style == 'slider'">
+                <ion-slides pager="true" [options]="slideOpts" dir="{{settings.dir}}" style="border-radius: 15px;">
+                    <ion-slide *ngFor="let image of children.children"> 
+                        <img class="ion-activatable ion-focusable hydrated {{children.banner_shadow}}" src="{{image.image}}" [style.width.px]="screenWidth" [style.height.px]="getHeight(image)" [style.border-radius]="children.border_radius" [style.padding]="children.margin_between">
+                    </ion-slide>
+                </ion-slides>
+            </div>
+          </div>  
+        </div> 
+      </div>
+      <ng-template #venBanner>
+      <div  hideWhen="loading" class="blocks">
+                  <!-- Banner Slider -->
+            <div>
+              <ion-slides pager="true" [options]="slideOpts" dir="{{settings.dir}}" style="border-radius: 15px;">
+                  <ion-slide> 
+                      <img src="/assets/Component 1.svg" [style.width.px]="screenWidth" [style.height.px]="140" >
+                  </ion-slide>
+                  <ion-slide> 
+                      <img src="/assets/Component 2.svg" [style.width.px]="screenWidth" [style.height.px]="140" >
+                  </ion-slide>
+              </ion-slides>
+          </div>
+        </div>  
+    </ng-template>
+<!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider --><!-- Vendors Slider -->
+          <!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you --><!-- Best Chocolate shop near you -->
+    <span >
+      <strong style=" font-family: Muli; font-weight: bold;font-style: normal;font-size: 18px;">{{"Best Chocolate shop near you" | translate}} </strong>&nbsp;<ion-icon src="/assets/choclate icon (1).svg" ></ion-icon>
+    </span> 
+    <p style="margin-bottom: 5px;" ></p>
+
+        <ion-slides  [options]="sliderConfigg"   >
+          
+          <ion-slide  *ngFor="let item of venDisChoco" (click)="detail(item)"   >
+            <ion-card  class="noshadow"  >
+              <ion-grid  class="ion-text-left" >
+                <ion-row >
+                  <img *ngIf="item.icon" src="{{item.banner}}">
+                </ion-row>
+                <ion-row style="padding: 5px">
+                 <strong>{{item.name}}</strong>
+                 </ion-row>
+                 <ion-row style="padding: 2px" class="pricefont">
+                  <ion-icon src="/assets/truck 1.svg"></ion-icon>&nbsp;{{"Within :"| translate}}&nbsp;{{item.delivery_time}}&nbsp;{{"mins"| translate}}
+                </ion-row>
+                <!-- <ion-row >
+                    <ion-col *ngIf="item.spl_ftr_one" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}</ion-col>
+                    <ion-col *ngIf="item.spl_ftr_two" size="6" style="color: #6A097D; "><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_two}}</ion-col>
+                </ion-row> -->
+                
+                <ion-row  style="padding: 2px" class="pricefont">
+                 <ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}
+                </ion-row>
+                <ion-row  style="padding: 2px" class="pricefont" >
+                  {{"Delivery fee:" | translate}}&nbsp;{{delPriceFlowers}}
+                 </ion-row>
+              </ion-grid>
+          </ion-card>
+          </ion-slide>
+        </ion-slides>
+        <!-- </div> -->
+<!-- Best flowes shop near you --><!-- Best flowes shop near you --><!-- Best flowes shop near you --><!-- Best flowes shop near you --><!-- Best flowes shop near you --><!-- Best flowes shop near you --><!-- Best flowes shop near you -->
+<br/>
+                <span style="margin-top: 10px;">
+                        <strong style=" font-family: Muli; font-weight: bold;font-style: normal;font-size: 18px;">{{"Best Flower shop near you" | translate}}</strong>&nbsp;<ion-icon src="/assets/flower 1.svg"></ion-icon>
+                        
+                  </span> 
+                  <p style="margin-bottom: 5px;" ></p>
+                <ion-slides [options]="sliderConfigg">
+                  <ion-slide  *ngFor="let item of venDisFlow" (click)="detail(item)"   >
+                    <ion-card  class="noshadow">
+                      <ion-grid  class="ion-text-left">
+                        <ion-row >
+                          <img *ngIf="item.icon" src="{{item.banner}}">
+                        </ion-row>
+                        <ion-row style="padding: 5px" >
+                         <strong>{{item.name}}</strong>
+                        </ion-row>
+                        <ion-row style="padding: 2px">
+                         <ion-icon src="/assets/truck 1.svg"></ion-icon>&nbsp;{{"Within :"| translate}}&nbsp;{{item.delivery_time}}&nbsp;{{"mins"| translate}}
+                        </ion-row>
+
+                        <!-- <ion-row >
+                            <ion-col *ngIf="item.spl_ftr_one" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}</ion-col>
+                            <ion-col *ngIf="item.spl_ftr_two" size="6" style="color: #6A097D; "><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_two}}</ion-col>
+                        </ion-row> -->
+                        <ion-row style="padding: 2px">
+                          <ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}
+                        </ion-row>
+                        <ion-row style="padding: 2px" >
+                         {{"Delivery fee:" | translate}}&nbsp;{{delPriceFlowers}}
+                        </ion-row>
+
+                      </ion-grid>
+                  </ion-card>
+                  </ion-slide>
+                </ion-slides>
+                <br/>
+<!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery -->
+<!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery -->
+<!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery -->
+<!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery -->
+<span style="margin-top: 10px;">
+                  <strong style=" font-family: Muli; font-weight: bold;font-style: normal;font-size: 18px;">
+                    {{"Sugar Free" | translate}}
+                   </strong>
+                   <ion-icon src="/assets/choclate icon (1).svg" ></ion-icon>
+            </span> 
+            <p style="margin-bottom: 5px;" ></p>
+           
+          <ion-slides [options]="sliderConfig" >
+            <ion-slide  *ngFor="let item of venDisChocoSF" (click)="detail(item)">
+              <ion-card  class="noshadow">
+                <ion-grid  class="ion-text-left"> 
+                  <ion-row >
+                    <img *ngIf="item.icon" src="{{item.banner}}">
+                  </ion-row>
+                  <ion-row >
+                    <ion-col size="6"> <strong>{{item.name}}</strong> </ion-col>
+                    <ion-col size="6" style="font-size: 12px;"><ion-icon src="/assets/truck 1.svg"></ion-icon>&nbsp;{{"Within :"| translate}}{{item.delivery_time}}&nbsp;{{"mins"| translate}}</ion-col>
+                  </ion-row>
+                  <!-- <ion-row >
+                      <ion-col *ngIf="item.spl_ftr_one" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}</ion-col> 
+                      <ion-col *ngIf="item.spl_ftr_two" size="6" style="color: #6A097D; "><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_two}}</ion-col>
+                  </ion-row> -->
+                  <ion-row >
+                    <ion-col class="pricefont" size="6">{{"Delivery fee:" | translate}}&nbsp;{{delPriceFlowers}}</ion-col>
+                    <ion-col class="pricefont" *ngIf="item.spl_ftr_two" size="6" style="color: #6A097D; "><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_two}}</ion-col>
+                  </ion-row>
+                </ion-grid>
+            </ion-card>
+            </ion-slide>
+          </ion-slides>
+          <br/>
+<!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery -->
+<span style="margin-top: 10px;">
+                  <strong style=" font-family: Muli; font-weight: bold;font-style: normal;font-size: 18px;">
+                     {{"Free Wrapping" | translate}}
+                   </strong>
+                   <ion-icon name="gift-outline"></ion-icon>
+            </span> 
+            <p style="margin-bottom: 5px;" ></p>
+           
+          <ion-slides [options]="sliderConfig">
+            <ion-slide  *ngFor="let item of venDisFR" (click)="detail(item)"   >
+              <ion-card  class="noshadow">
+                <ion-grid  class="ion-text-left">
+                  <ion-row >
+                    <img *ngIf="item.icon" src="{{item.banner}}">
+                  </ion-row>
+                  <ion-row >
+                    <ion-col size="6"><strong>{{item.name}}</strong>  </ion-col>
+                    <ion-col size="6" style="font-size: 12px;" ><ion-icon src="/assets/truck 1.svg"></ion-icon>&nbsp;{{"Within :"| translate}}{{item.delivery_time}}&nbsp;{{"mins"| translate}}</ion-col>
+                  </ion-row>
+                  <!-- <ion-row >
+                      <ion-col *ngIf="item.spl_ftr_one" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}</ion-col>
+                      <ion-col *ngIf="item.spl_ftr_two" size="6" style="color: #6A097D; "><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_two}}</ion-col>
+                  </ion-row> -->
+                  <ion-row >
+                    <ion-col class="pricefont" size="6">{{"Delivery fee:" | translate}}&nbsp;{{delPriceFlowers}}</ion-col>
+                    <!-- <ion-col class="pricefont" *ngIf="item.spl_ftr_one" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}</ion-col> -->
+                    <ion-col class="pricefont" *ngIf="item.spl_ftr_three" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_three}}</ion-col>
+                  </ion-row>
+                </ion-grid>
+            </ion-card>
+            </ion-slide>
+          </ion-slides>
+          <br/>
+<!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery --><!-- free delivery -->
+<span style="margin-top: 10px;">
+                  <strong style=" font-family: Muli; font-weight: bold;font-style: normal;font-size: 18px;">
+                     {{"Free Delivery" | translate}}
+                   </strong>
+                   <ion-icon name="card-outline"></ion-icon>
+            </span> 
+            <p style="margin-bottom: 5px;" ></p>
+          <ion-slides [options]="sliderConfig">
+            <ion-slide  *ngFor="let item of venDisFD" (click)="detail(item)"   >
+              <ion-card  class="noshadow">
+                <ion-grid  class="ion-text-left">
+                  <ion-row >
+                    <img *ngIf="item.icon" src="{{item.banner}}"> 
+                  </ion-row>
+                  <ion-row >
+                    <ion-col size="6"><strong>{{item.name}}</strong> </ion-col>
+                    <ion-col size="6" style="font-size: 12px;"><ion-icon src="/assets/truck 1.svg"></ion-icon>&nbsp;{{"Within :"| translate}}{{item.delivery_time}}&nbsp;{{"mins"| translate}}</ion-col>
+                  </ion-row>
+                  <ion-row >
+                      <ion-col class="pricefont" *ngIf="item.spl_ftr_one" size="6"><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_one}}</ion-col>
+                      <ion-col  class="pricefont"*ngIf="item.spl_ftr_two" size="6" style="color: #6A097D; "><ion-icon name="gift-outline"></ion-icon>&nbsp;{{item.spl_ftr_two}}</ion-col>
+                  </ion-row> 
+                  <!-- <ion-row >
+                    <ion-col size="6">{{"Delivery:" | translate}}&nbsp;{{item.delivery_price}}</ion-col>
+                  </ion-row> -->
+                </ion-grid>
+            </ion-card>
+            </ion-slide>
+          </ion-slides>
+
+
+
+
+
+
+
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!-- <div *ngIf="data.blocks?.on_sale?.length" class="related-products products">
+  <ion-list-header>
+    <ion-label>{{"Onsale Products" | translate}}</ion-label>
+  </ion-list-header>
+  <div class="scroll-related-products">
+      <div class="product" *ngFor="let item of data.blocks.on_sale" [style.width.px]="settings.dimensions.homeSliderWidth">
+          <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
+            <ion-card-content>  <ion-img alt="" *ngIf="item.images?.length" [src]="item.images[0].src" (click)="getProduct(item)" [style.height.px]="settings.dimensions.homeSliderHeight"></ion-img>
+            <ion-img alt="" [style.height.px]="settings.dimensions.homeSliderHeight" *ngIf="!item.images?.length" src="assets/image/logo.png" (click)="getProduct(item)"></ion-img><ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id)"></ion-icon>
+            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id)"></ion-icon>
+            <ion-button color="danger" class="stock" *ngIf="item.stock_status == 'outofstock'">{{"No Stock" | translate}}</ion-button>
+            <div *ngIf="item.stock_status == 'instock'">
+            <ion-button color="success" class="offer" *ngIf="((item.regular_price - item.price) /item.regular_price*100) >= 1">{{(item.regular_price - item.price) /item.regular_price*100 | number : '1.0-0'}}%</ion-button>
+            </div>
+            </ion-card-content>
+            <ion-card-header (click)="getProduct(item)">
+                <ion-card-title mode="md">{{item.name}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <p class="price">
+                    <span class="regular-price" *ngIf="!item.sale_price" [innerHTML]="item.formated_price"></span>
+                    <span class="regular-price" *ngIf="item.sale_price"><span [innerHTML]="item.formated_sales_price"></span><span class="special-price"><del [innerHTML]="item.formated_price"></del></span></span>
+                </p>
+                <ion-row class="ion-align-items-center ion-justify-content-center">
+                <ion-col *ngIf="data.cart[item.id] == undefined || data.cart[item.id] == 0">
+                        <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item)">
+                          {{item.stock_status == 'outofstock' ? "No Stock" : "ADD"  | translate}}
+                        </ion-button>
+                    </ion-col>
+                    <ion-col style="text-align: center;" *ngIf="data.cart[item.id] >= 1" align-self-end>
+                  <ion-row>
+                    <ion-col>
+                          <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item)">
+                          <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+                          </ion-button>
+                    </ion-col>
+                    <ion-col>
+                          <ion-button expand="full" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[item.id] >= 1">{{data.cart[item.id]}}
+                          </ion-button>
+                    </ion-col>
+                    <ion-col>
+                          <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item)">
+                          <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                          </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+                </ion-row>
+              </ion-card-content>
+          </ion-card>
+      </div>
+  </div>
+</div> -->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+<!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale--><!--Product Onsale-->
+  
+  <!-- <ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && data.products?.length" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+
+<!-- </div> -->
+<!-- 
+    <div class="no-service" *ngIf="!loading && settings.settings && settings.settings.location_filter == 1">
+      <ion-label *ngIf="data.blocks && (!data.blocks.recentProducts.length && !data.blocks.categories.length)">
+        <ion-icon color="medium" name="location-outline"></ion-icon>
+        <h2>Sorry, Service is not available in your city. we will be there soon!</h2>
+        <ion-button mode="md" color="favorite" expand="block" fill="solid" (click)="getLocation()">{{"Address" | translate}}</ion-button>
+      </ion-label>
+
+      <ion-label *ngIf="api.userLocation.latitude == 0">
+        <ion-icon color="medium" name="location-outline"></ion-icon>
+        <h2>Please choose your address!</h2>
+        <ion-button mode="md" color="favorite" expand="block" fill="solid" (click)="getLocation()">{{"Address" | translate}}</ion-button>
+      </ion-label>
+    </div> -->
+  
+</ion-content>
+
+
+
+
+

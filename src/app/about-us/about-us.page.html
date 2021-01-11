@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button>
+       <ion-menu-button  class="search-outline-color" ></ion-menu-button>
+      </ion-button> 
+    </ion-buttons>
+    <ion-title>About app</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" >
+  <!-- <div class="spinner" *ngIf="!aboutAppText"><ion-spinner> </ion-spinner></div> -->
+<!-- <ion-grid>
+  <ion-row  class="AlignerAboutUs">
+    <span>
+      <h2>{{title}}</h2>
+    </span>
+    <p>
+    {{aboutAppText}}
+  </p>
+  </ion-row >
+  <ion-row  class="AlignerAboutUs">
+      <ion-col >
+      <ion-item lines="none" button="true"  line="true"  routerLink="/terms">
+        <ion-label>
+          <h2> {{titleTerms}}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+    </ion-row>
+  <ion-row  class="AlignerAboutUs">
+      <ion-col >
+      <ion-item lines="none" button="true"  line="true"  routerLink="/privacy-policy">
+        <ion-label>
+          <h2> {{titleprivacyPolicy}}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+    </ion-row>
+
+</ion-grid> -->
+
+<ion-card (click)="expandItem(item)" *ngFor="let item of items">
+  <ion-card-header>
+    <ion-card-title>
+    {{item.title}}
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <app-expandable expandHeight="100px" [expanded]="item.expanded">
+      <p>
+        {{item.content}}
+      </p>
+    </app-expandable>
+  </ion-card-content>
+</ion-card>
+
+</ion-content>
